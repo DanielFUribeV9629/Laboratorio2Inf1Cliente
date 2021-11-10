@@ -1,6 +1,6 @@
-package labinforma2cliente;
+package logica.labinforma2cliente;
 
-import vista.Vista;
+import presentacion.vista.Vista;
 
 public class LabInforma2Cliente {
 

@@ -1,4 +1,4 @@
-package modelo;
+package presentacion.modelo;
 
 public class RequestSemaforo {
     

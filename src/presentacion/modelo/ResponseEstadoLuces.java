@@ -1,5 +1,8 @@
 package presentacion.modelo;
 
+import logica.Conexion;
+import presentacion.vista.Vista;
+
 public class ResponseEstadoLuces {
     
     private boolean luzRoja, luzAmarilla, luzVerde;

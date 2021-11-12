@@ -76,7 +76,8 @@ public final class ControladorCliente implements ActionListener, ComponentListen
                     JOptionPane.showMessageDialog(null, "No fue posible desconectarse");
                 }
             } else if (boton == vista.getBtnEnviar()) {
-                enviar();
+                getConexion().enviar(modelo, modelo);
+                //enviar();
             }
         }
     }

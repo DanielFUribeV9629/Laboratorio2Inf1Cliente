@@ -11,29 +11,25 @@ import java.io.DataInputStream;
 import java.io.InputStreamReader;
 import org.json.*;
 
-
 public class Conexion implements Runnable {
     
     private String host = "localhost";
     private int puerto = 5000;
-    private Socket sock;    
-    protected DataOutputStream output_stream; //Flujo de datos de salida
-    //private BufferedReader input_stream;  //Flujo datos entrada
-    private DataInputStream input_stream;
-    protected String mensajeServidor; //Mensajes entrantes (recibidos) en el servidor
-    InputStreamReader received_data;
+    private Socket sock; 
+    private DataInputStream input_stream; //Flujo datos entrada
+    private DataOutputStream output_stream; //Flujo de datos de salida
+    public volatile boolean lecturaActiva;
     private Thread hiloLectura;
-    private volatile boolean lecturaActiva;
+    byte buffer[];  // Para almacenar lo que llegue del servidor
 
-    public void SistemaCliente() {
-        hiloLectura = new Thread(this);               
-    }
+    public Conexion() {
+        lecturaActiva = true;
+        hiloLectura = new Thread(this);
+    }        
     // enviar datos al server 
     public ResponseDeServidor enviar(RequestSemaforo semaforo1, RequestSemaforo semaforo2) {
-        String f = "Enviando";
         ResponseDeServidor estadoLuz = new ResponseDeServidor();
-        System.out.println(f);
-        // json to send 
+        // simulated json sent  
         JSONObject json = new JSONObject();
         json.put("client_id", "1");
         json.put("cant_semaforos", "2");
@@ -43,10 +39,9 @@ public class Conexion implements Runnable {
         json.put("group_id", "1");           
         // Datos al server 
         try {
-            for (int i = 0; i < 2; i++) {
-                //Se escribe en el servidor usando su flujo de datos            
-                output_stream.writeUTF(json.toString());
-            }
+            output_stream.writeUTF(json.toString());
+            output_stream.flush();
+            System.out.println("Enviando: "+json.toString());
             return estadoLuz;
         }
         catch(IOException e) {
@@ -57,23 +52,14 @@ public class Conexion implements Runnable {
     // conectar al server    
     public boolean conectar() {
         System.out.println("Inicia conexión");
-        byte buffer[]; 
         try {
-            sock = new Socket(host, puerto);        
-            lecturaActiva = true;
+            sock = new Socket(host, puerto);
             // datos entrantes
             input_stream=new DataInputStream(sock.getInputStream());
-            buffer = new byte[500];
-            input_stream.read(buffer);
-            String mensaje = new String(buffer).trim();
-            System.out.println("Input Stream: "+mensaje); 
             // datos salientes
             output_stream = new DataOutputStream(sock.getOutputStream());
-            for (int i = 0; i < 2; i++) {
-                //Se escribe en el servidor usando su flujo de datos            
-                output_stream.writeUTF("Este es el mensaje número " + (i+1));
-            }            
-            //hiloLectura.start();
+            // Thread lectura
+            hiloLectura.start();
             return true;       
         }
         catch(IOException e) {
@@ -85,9 +71,9 @@ public class Conexion implements Runnable {
     public boolean desconectar() {
         System.out.println("Fin de la conexión");
         try {
-            sock.close();
+            this.lecturaActiva = false;
             input_stream.close();
-            lecturaActiva = false;
+            sock.close();            
             return true;
         }
         catch(IOException e) {
@@ -97,9 +83,9 @@ public class Conexion implements Runnable {
     }
     // recibir datos   
     public JSONObject recibir(String data_received) {                
-        JSONObject json_response = new JSONObject(data_received);
-        System.out.print(json_response);
-        // received json
+        JSONObject json_response = new JSONObject(data_received); 
+        System.out.print("Recibiendo: "+json_response.toString()+"\n");
+        // sumluted received json
         JSONObject json = new JSONObject();
         json.put("luz_roja", true);
         json.put("luz_amarilla", false);
@@ -109,17 +95,21 @@ public class Conexion implements Runnable {
     }
 
     @Override
-    public void run() {
-        // Para almacenar lo que llegue del servidor
-        byte buffer[];                        
-        while(lecturaActiva){
-            try {
-                buffer = new byte[500];
-                input_stream.read(buffer);           
-            } catch (IOException ex) {
-                System.out.println("error en la comunicación");
+    public void run() { 
+    while(lecturaActiva){
+        try {
+                buffer = new byte[1024];
+                input_stream.read(buffer);
+                String mensaje = new String(buffer).trim();
+                this.recibir(mensaje);
+            } catch (IOException e) {
+                System.out.println("Socket disconnected ..");
+                //e.printStackTrace();
             }
         }    
     }
     
+    public void stop(){
+        lecturaActiva = false;
+    }
 }

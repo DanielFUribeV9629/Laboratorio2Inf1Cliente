@@ -37,7 +37,7 @@ public class RequestSemaforo {
         this.clienteId = clienteId;
     }
 
-    public ResponseDeServidor enviar() {
+    public boolean enviar() {
         RequestSemaforo semaforo1 = new RequestSemaforo();
         semaforo1.setCantSemaforos(Integer.parseInt(getVentanaPrincipal().getTxtCantSemaforos1().getText()));
         semaforo1.setLuzRojaFalla(Integer.parseInt(getVentanaPrincipal().getTxtLuzRojaMal1().getText()));
@@ -53,10 +53,27 @@ public class RequestSemaforo {
         semaforo2.setLuzVerdeFalla(Integer.parseInt(getVentanaPrincipal().getTxtLuzVerdeMal2().getText()));
         semaforo2.setGrupoId(2);
         semaforo2.setClienteId(1111);
-
-        ResponseDeServidor estadoLuz = getConexion().enviar(semaforo1, semaforo2);
         
-        return estadoLuz;
+        System.out.println("Entre a enviar");
+
+        boolean operacionEnviar = getConexion().enviar(semaforo1, semaforo2);
+        
+        System.out.println("sali a enviar");
+        
+        if (operacionEnviar){
+            //getConexion().recepcion();
+        }
+        
+        
+        
+        
+        return true;
+    }
+    
+    public void recibir(ResponseDeServidor[] response){
+        for (int i=0 ; i<response.length ; i++){
+            System.out.println("res" + response);
+        }
     }
 
     public RequestSemaforo() {

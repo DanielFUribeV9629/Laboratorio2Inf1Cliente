@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import logica.Conexion;
 import presentacion.modelo.RequestSemaforo;
 import presentacion.modelo.ResponseDeServidor;
-import presentacion.modelo.ResponseEstadoLuces;
 import presentacion.vista.Vista;
 
 public final class ControladorCliente implements ActionListener, ComponentListener {
@@ -76,8 +75,8 @@ public final class ControladorCliente implements ActionListener, ComponentListen
                     JOptionPane.showMessageDialog(null, "No fue posible desconectarse");
                 }
             } else if (boton == vista.getBtnEnviar()) {
-                getConexion().enviar(modelo, modelo);
-                //enviar();
+                //getConexion().enviar(modelo, modelo);
+                enviar();
             }
         }
     }
@@ -97,10 +96,14 @@ public final class ControladorCliente implements ActionListener, ComponentListen
             vista.getTxtLuzVerdeMal1().setEnabled(false);
             vista.getTxtLuzVerdeMal2().setEnabled(false);            
             
-            ResponseDeServidor response = getModelo().enviar();
+            //ResponseDeServidor response = getModelo().enviar();
+            System.out.println("Recibiendoooooooooooooo");
+            boolean response = getModelo().enviar();
+            
+            System.out.println("Recibiendoooooooooooooo");
             
             JOptionPane.showMessageDialog(null, "Su información ha sido enviada exitosamente");
-            
+            /*
             if (response.getSemaforo1().isLuzRoja()){
                 vista.setRadioLuzRoja1(true);
             }else if (response.getSemaforo1().isLuzAmarilla()) {
@@ -115,7 +118,7 @@ public final class ControladorCliente implements ActionListener, ComponentListen
                 vista.setRadioLuzRoja2(true);
             }else if (response.getSemaforo2().isLuzVerde()) {
                 vista.setRadioLuzRoja2(true);
-            }
+            }*/
         }
     }
     

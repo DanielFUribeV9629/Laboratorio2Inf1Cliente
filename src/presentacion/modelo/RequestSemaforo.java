@@ -18,7 +18,7 @@ public class RequestSemaforo {
 
     public Conexion getConexion() {
         if (conexion == null) {
-            conexion = new Conexion();
+            conexion = new Conexion(this.vistaPrincipal);
         }
         return conexion;
     }
@@ -37,6 +37,7 @@ public class RequestSemaforo {
         this.clienteId = clienteId;
     }
 
+    /*
     public ResponseDeServidor enviar() {
         RequestSemaforo semaforo1 = new RequestSemaforo();
         semaforo1.setCantSemaforos(Integer.parseInt(getVentanaPrincipal().getTxtCantSemaforos1().getText()));
@@ -58,7 +59,7 @@ public class RequestSemaforo {
         
         return estadoLuz;
     }
-
+*/
     public RequestSemaforo() {
     }
 

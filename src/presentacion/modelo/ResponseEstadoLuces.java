@@ -5,49 +5,49 @@ import presentacion.vista.Vista;
 
 public class ResponseEstadoLuces {
     
-    private boolean luzRoja, luzAmarilla, luzVerde;
-    private int grupoId;
+    private boolean luz_roja, luz_amarilla, luz_verde;
+    private int group_id;
 
     public ResponseEstadoLuces() {
     }
 
-    public ResponseEstadoLuces(boolean luzRoja, boolean luzAmarilla, boolean luzVerde, int grupoId) {
-        this.luzRoja = luzRoja;
-        this.luzAmarilla = luzAmarilla;
-        this.luzVerde = luzVerde;
-        this.grupoId = grupoId;
+    public ResponseEstadoLuces(boolean luz_roja, boolean luz_amarilla, boolean luz_verde, int group_id) {
+        this.luz_roja = luz_roja;
+        this.luz_amarilla = luz_amarilla;
+        this.luz_verde = luz_verde;
+        this.group_id = group_id;
     }
 
     public boolean isLuzRoja() {
-        return luzRoja;
+        return luz_roja;
     }
 
-    public void setLuzRoja(boolean luzRoja) {
-        this.luzRoja = luzRoja;
+    public void setLuzRoja(boolean luz_roja) {
+        this.luz_roja = luz_roja;
     }
 
     public boolean isLuzAmarilla() {
-        return luzAmarilla;
+        return luz_amarilla;
     }
 
-    public void setLuzAmarilla(boolean luzAmarilla) {
-        this.luzAmarilla = luzAmarilla;
+    public void setLuzAmarilla(boolean luz_amarilla) {
+        this.luz_amarilla = luz_amarilla;
     }
 
     public boolean isLuzVerde() {
-        return luzVerde;
+        return luz_verde;
     }
 
-    public void setLuzVerde(boolean luzVerde) {
-        this.luzVerde = luzVerde;
+    public void setLuzVerde(boolean luz_verde) {
+        this.luz_verde = luz_verde;
     }
 
     public int getGrupoId() {
-        return grupoId;
+        return group_id;
     }
 
-    public void setGrupoId(int grupoId) {
-        this.grupoId = grupoId;
+    public void setGrupoId(int group_id) {
+        this.group_id = group_id;
     }
     
 }

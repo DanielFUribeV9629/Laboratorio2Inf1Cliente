@@ -32,31 +32,49 @@ public class Conexion implements Runnable {
         // simulated json sent          
 
         //String men = "{ \"peticion\":\"update\", \"info\":[ { \"cant_semaforos\":\""+semaforo1.getCantSemaforos()+"\", \"luz_red_broken\":\""+semaforo1.getLuzRojaFalla()+"\", \"luz_yellow_broken\":\""+semaforo1.getLuzAmarillaFalla()+"\", \"luz_green_broken\":\""+semaforo1.getLuzVerdeFalla()+"\", \"client_id\":\""+semaforo1.getClienteId()+"\", \"group_id\":\""+semaforo1.getGrupoId()+"\" }, { \"cant_semaforos\":\""+semaforo2.getCantSemaforos()+"\", \"luz_red_broken\":\""+semaforo2.getLuzRojaFalla()+"\", \"luz_yellow_broken\":\""+semaforo2.getLuzAmarillaFalla()+"\", \"luz_green_broken\":\""+semaforo2.getLuzVerdeFalla()+"\", \"client_id\":\""+semaforo2.getClienteId()+"\", \"group_id\":\""+semaforo2.getGrupoId()+"\" } ] }";
+        String men1 = "{\n"
+                + "   \"peticion\":\"update\",\n"
+                + "   \"info\":\"[{'cant_semaforos': 7,'luz_red_broken': 1,'luz_yellow_broken': 2,'luz_green_broken': 3,'client_id': 2021051013,'group_id': 1},{'cant_semaforos': 15,'luz_red_broken': 4,'luz_yellow_broken': 5,'luz_green_broken': 6,'client_id': 2021051013,'group_id': 2}]\"\n"
+                + "}";
         
+        String data = "{\"info\": [{\"cant_semaforos\": 7, \"luz_red_broken\": 1, \"luz_yellow_broken\": 2, \"client_id\": 2021051014, \"group_id\": 1, \"luz_green_broken\": 3}, {\"cant_semaforos\": 15, \"luz_red_broken\": 4, \"luz_yellow_broken\": 5, \"client_id\": 2021051014, \"group_id\": 2, \"luz_green_broken\": 6}], \"peticion\": \"update\"}";
         
+        JSONObject json = new JSONObject(data);
+        
+
         String mens = "{\n"
                 + "   \"peticion\":\"update\",\n"
                 + "   \"info\":[\n"
                 + "      {\n"
-                + "         \"cant_semaforos\":\""+semaforo1.getCantSemaforos()+"\",\n"
-                + "         \"luz_red_broken\":\""+semaforo1.getLuzRojaFalla()+"\",\n"
-                + "         \"luz_yellow_broken\":\""+semaforo1.getLuzAmarillaFalla()+"\",\n"
-                + "         \"luz_green_broken\":\""+semaforo1.getLuzVerdeFalla()+"\",\n"
-                + "         \"client_id\":\""+semaforo1.getGrupoId()+"\",\n"
-                + "         \"group_id\":\""+semaforo1.getClienteId()+"\"\n"
+                + "         \"cant_semaforos\":\"" + semaforo1.getCantSemaforos() + "\",\n"
+                + "         \"luz_red_broken\":\"" + semaforo1.getLuzRojaFalla() + "\",\n"
+                + "         \"luz_yellow_broken\":\"" + semaforo1.getLuzAmarillaFalla() + "\",\n"
+                + "         \"luz_green_broken\":\"" + semaforo1.getLuzVerdeFalla() + "\",\n"
+                + "         \"client_id\":\"" + semaforo1.getGrupoId() + "\",\n"
+                + "         \"group_id\":\"" + semaforo1.getClienteId() + "\"\n"
                 + "      },\n"
                 + "      {\n"
-                + "         \"cant_semaforos\":\""+semaforo2.getCantSemaforos()+"\",\n"
-                + "         \"luz_red_broken\":\""+semaforo2.getLuzRojaFalla()+"\",\n"
-                + "         \"luz_yellow_broken\":\""+semaforo2.getLuzAmarillaFalla()+"\",\n"
-                + "         \"luz_green_broken\":\""+semaforo2.getLuzVerdeFalla()+"\",\n"
-                + "         \"client_id\":\""+semaforo2.getGrupoId()+"\",\n"
-                + "         \"group_id\":\""+semaforo2.getClienteId()+"\"\n"
+                + "         \"cant_semaforos\":\"" + semaforo2.getCantSemaforos() + "\",\n"
+                + "         \"luz_red_broken\":\"" + semaforo2.getLuzRojaFalla() + "\",\n"
+                + "         \"luz_yellow_broken\":\"" + semaforo2.getLuzAmarillaFalla() + "\",\n"
+                + "         \"luz_green_broken\":\"" + semaforo2.getLuzVerdeFalla() + "\",\n"
+                + "         \"client_id\":\"" + semaforo2.getGrupoId() + "\",\n"
+                + "         \"group_id\":\"" + semaforo2.getClienteId() + "\"\n"
                 + "      }\n"
                 + "   ]\n"
                 + "}";
+
+        /* RequestSemaforo[] respuestaCliente = {
+            new RequestSemaforo(1, 1, 1, 1, 1, 1),
+            new RequestSemaforo(2, 2, 2, 2, 2, 2)
+        };
+        Gson gson = new Gson();
+        String mensaje = gson.toJson(respuestaCliente);
+         */
         try {
-            output_stream.writeUTF(mens);
+            output_stream.writeUTF(json.toString());
+            //output_stream.writeUTF(mens);
+            // output_stream.writeUTF(mensaje.getBytes().toString());
             output_stream.flush();
             System.out.println("Enviando: " + mens);
             return true;
@@ -110,7 +128,8 @@ public class Conexion implements Runnable {
 
         return true;
     }
-/*
+
+    /*
     public JSONObject recibir(String data_received) {                
         JSONObject json_response = new JSONObject(data_received); 
         System.out.print("Recibiendo: "+json_response.toString()+"\n");
@@ -122,7 +141,7 @@ public class Conexion implements Runnable {
         json.put("group_id", "2");
         return json; 
     }
-    */
+     */
     @Override
     public void run() {
         while (lecturaActiva) {

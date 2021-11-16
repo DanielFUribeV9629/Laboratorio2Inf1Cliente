@@ -30,16 +30,31 @@ public class Conexion implements Runnable {
     public ResponseDeServidor enviar(RequestSemaforo semaforo1, RequestSemaforo semaforo2) {
         ResponseDeServidor estadoLuz = new ResponseDeServidor();
         // simulated json sent  
+        JSONObject json1 = new JSONObject();
+        json1.put("client_id", "1");
+        json1.put("cant_semaforos", semaforo1.getCantSemaforos());
+        json1.put("luz_red_broken", semaforo1.getLuzRojaFalla());
+        json1.put("luz_yellow_broken", semaforo1.getLuzAmarillaFalla());
+        json1.put("luz_green_broken", semaforo1.getLuzVerdeFalla());
+        json1.put("group_id", "1"); 
+        JSONObject json2 = new JSONObject();
+        json2.put("client_id", "1");
+        json2.put("cant_semaforos", semaforo2.getCantSemaforos());
+        json2.put("luz_red_broken", semaforo2.getLuzRojaFalla());
+        json2.put("luz_yellow_broken", semaforo2.getLuzAmarillaFalla());
+        json2.put("luz_green_broken", semaforo2.getLuzVerdeFalla());
+        json2.put("group_id", "2");    
+        
+        JSONArray itemsArray = new JSONArray();
+        itemsArray.put(json1);
+        itemsArray.put(json2);
+        
         JSONObject json = new JSONObject();
-        json.put("client_id", "1");
-        json.put("cant_semaforos", "2");
-        json.put("luz_red_broken", "1");
-        json.put("luz_yellow_broken", "2");
-        json.put("luz_green_broken", "0");
-        json.put("group_id", "1");           
+        json.put("peticion", "update");
+        json.put("info", itemsArray.toString());
         // Datos al server 
         try {
-            output_stream.writeUTF(json.toString());
+            output_stream.write((json.toString()+"\n").getBytes());
             output_stream.flush();
             System.out.println("Enviando: "+json.toString());
             return estadoLuz;
@@ -98,6 +113,7 @@ public class Conexion implements Runnable {
     public void run() { 
     while(lecturaActiva){
         try {
+            
                 buffer = new byte[1024];
                 input_stream.read(buffer);
                 String mensaje = new String(buffer).trim();
@@ -106,7 +122,8 @@ public class Conexion implements Runnable {
                 System.out.println("Socket disconnected ..");
                 //e.printStackTrace();
             }
-        }    
+        }          
+        
     }
     
     public void stop(){

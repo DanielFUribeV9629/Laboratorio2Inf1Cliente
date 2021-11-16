@@ -76,8 +76,8 @@ public final class ControladorCliente implements ActionListener, ComponentListen
                     JOptionPane.showMessageDialog(null, "No fue posible desconectarse");
                 }
             } else if (boton == vista.getBtnEnviar()) {
-                getConexion().enviar(modelo, modelo);
-                //enviar();
+                //getConexion().enviar(modelo, modelo);
+                enviar();
             }
         }
     }
@@ -97,11 +97,29 @@ public final class ControladorCliente implements ActionListener, ComponentListen
             vista.getTxtLuzVerdeMal1().setEnabled(false);
             vista.getTxtLuzVerdeMal2().setEnabled(false);            
             
-            ResponseDeServidor response = getModelo().enviar();
+            //ResponseDeServidor response = getModelo().enviar();
+            
+            RequestSemaforo semaforo1 = new RequestSemaforo();
+            semaforo1.setCantSemaforos(Integer.parseInt(vista.getTxtCantSemaforos1().getText()));
+            semaforo1.setLuzRojaFalla(Integer.parseInt(vista.getTxtLuzRojaMal1().getText()));
+            semaforo1.setLuzAmarillaFalla(Integer.parseInt(vista.getTxtLuzAmaMal1().getText()));
+            semaforo1.setLuzVerdeFalla(Integer.parseInt(vista.getTxtLuzVerdeMal1().getText()));
+            semaforo1.setGrupoId(1);
+            semaforo1.setClienteId(1111);
+
+            RequestSemaforo semaforo2 = new RequestSemaforo();
+            semaforo2.setCantSemaforos(Integer.parseInt(vista.getTxtCantSemaforos2().getText()));
+            semaforo2.setLuzRojaFalla(Integer.parseInt(vista.getTxtLuzRojaMal2().getText()));
+            semaforo2.setLuzAmarillaFalla(Integer.parseInt(vista.getTxtLuzAmaMal2().getText()));
+            semaforo2.setLuzVerdeFalla(Integer.parseInt(vista.getTxtLuzVerdeMal2().getText()));
+            semaforo2.setGrupoId(2);
+            semaforo2.setClienteId(1111);
+
+            getConexion().enviar(semaforo1, semaforo2);
             
             JOptionPane.showMessageDialog(null, "Su información ha sido enviada exitosamente");
             
-            if (response.getSemaforo1().isLuzRoja()){
+           /* if (response.getSemaforo1().isLuzRoja()){
                 vista.setRadioLuzRoja1(true);
             }else if (response.getSemaforo1().isLuzAmarilla()) {
                 vista.setRadioLuzRoja1(true);
@@ -115,7 +133,7 @@ public final class ControladorCliente implements ActionListener, ComponentListen
                 vista.setRadioLuzRoja2(true);
             }else if (response.getSemaforo2().isLuzVerde()) {
                 vista.setRadioLuzRoja2(true);
-            }
+            }*/
         }
     }
     

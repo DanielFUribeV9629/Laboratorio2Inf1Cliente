@@ -82,6 +82,8 @@ public class Conexion implements Runnable {
         try {
             JSONArray server_response = new JSONArray(data_received); 
             System.out.print("Recibiendo: "+server_response.toString()+"\n");
+            // set semaforos
+            //boolean status_semaforos = controladorCliente.setLuces(server_response);
             // sumluted received json
             JSONObject json = new JSONObject();
             json.put("luz_roja", true);
@@ -102,7 +104,9 @@ public class Conexion implements Runnable {
                 buffer = new byte[1024];
                 input_stream.read(buffer);
                 String mensaje = new String(buffer).trim();
-                this.recibir(mensaje);
+                if (!(mensaje.equals(""))) {
+                    this.recibir(mensaje);
+                }
             } catch (IOException e) {
                 System.out.println("Socket disconnected ..");
                 //e.printStackTrace();

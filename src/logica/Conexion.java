@@ -51,7 +51,8 @@ public class Conexion implements Runnable {
         
         JSONObject json = new JSONObject();
         json.put("peticion", "update");
-        json.put("info", itemsArray.toString());
+        String temp = itemsArray.toString().replace("\"", "'");
+        json.put("info", temp);
         // Datos al server 
         try {
             output_stream.write((json.toString()+"\n").getBytes());

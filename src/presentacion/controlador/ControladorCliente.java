@@ -22,7 +22,7 @@ public final class ControladorCliente implements ActionListener, ComponentListen
         modelo = vista.getModelo();
         conexion = getConexion();
     }
-    
+
     public Conexion getConexion() {
         if (conexion == null) {
             conexion = new Conexion();
@@ -49,9 +49,9 @@ public final class ControladorCliente implements ActionListener, ComponentListen
                 vista.getTxtLuzVerdeMal2().setEnabled(true);
                 vista.getBtnEnviar().setEnabled(true);
                 boolean conectado = getConexion().conectar();
-                if (conectado){
+                if (conectado) {
                     JOptionPane.showMessageDialog(null, "Se ha conectado exitosamente");
-                }else {
+                } else {
                     JOptionPane.showMessageDialog(null, "No fue posible realizar la conexión");
                 }
             } else if (boton == vista.getBtnDesconectar()) {
@@ -69,9 +69,9 @@ public final class ControladorCliente implements ActionListener, ComponentListen
                 vista.getTxtLuzVerdeMal2().setEnabled(false);
                 vista.getBtnEnviar().setEnabled(false);
                 boolean conectado = getConexion().desconectar();
-                if (conectado){
+                if (conectado) {
                     JOptionPane.showMessageDialog(null, "Se ha desconectado exitosamente");
-                }else {
+                } else {
                     JOptionPane.showMessageDialog(null, "No fue posible desconectarse");
                 }
             } else if (boton == vista.getBtnEnviar()) {
@@ -94,14 +94,30 @@ public final class ControladorCliente implements ActionListener, ComponentListen
             vista.getTxtLuzAmaMal1().setEnabled(false);
             vista.getTxtLuzAmaMal2().setEnabled(false);
             vista.getTxtLuzVerdeMal1().setEnabled(false);
-            vista.getTxtLuzVerdeMal2().setEnabled(false);            
-            
+            vista.getTxtLuzVerdeMal2().setEnabled(false);
+
             //ResponseDeServidor response = getModelo().enviar();
-            System.out.println("Recibiendoooooooooooooo");
-            boolean response = getModelo().enviar();
-            
-            System.out.println("Recibiendoooooooooooooo");
-            
+
+            RequestSemaforo semaforo1 = new RequestSemaforo();
+            semaforo1.setCantSemaforos(Integer.parseInt(vista.getTxtCantSemaforos1().getText()));
+            semaforo1.setLuzRojaFalla(Integer.parseInt(vista.getTxtLuzRojaMal1().getText()));
+            semaforo1.setLuzAmarillaFalla(Integer.parseInt(vista.getTxtLuzAmaMal1().getText()));
+            semaforo1.setLuzVerdeFalla(Integer.parseInt(vista.getTxtLuzVerdeMal1().getText()));
+            semaforo1.setGrupoId(1);
+            semaforo1.setClienteId(1111);
+
+            RequestSemaforo semaforo2 = new RequestSemaforo();
+            semaforo2.setCantSemaforos(Integer.parseInt(vista.getTxtCantSemaforos2().getText()));
+            semaforo2.setLuzRojaFalla(Integer.parseInt(vista.getTxtLuzRojaMal2().getText()));
+            semaforo2.setLuzAmarillaFalla(Integer.parseInt(vista.getTxtLuzAmaMal2().getText()));
+            semaforo2.setLuzVerdeFalla(Integer.parseInt(vista.getTxtLuzVerdeMal2().getText()));
+            semaforo2.setGrupoId(2);
+            semaforo2.setClienteId(1111);
+
+            getConexion().enviar(semaforo1, semaforo2);
+
+            //boolean response = getModelo().enviar();
+
             JOptionPane.showMessageDialog(null, "Su información ha sido enviada exitosamente");
             /*
             if (response.getSemaforo1().isLuzRoja()){
@@ -121,7 +137,7 @@ public final class ControladorCliente implements ActionListener, ComponentListen
             }*/
         }
     }
-    
+
     public RequestSemaforo getModelo() {
         return modelo;
     }

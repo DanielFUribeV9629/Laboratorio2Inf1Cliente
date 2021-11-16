@@ -1,5 +1,6 @@
 package logica;
 
+import com.google.gson.Gson;
 import presentacion.modelo.RequestSemaforo;
 import presentacion.modelo.ResponseDeServidor;
 import java.io.DataOutputStream;
@@ -7,8 +8,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.io.DataInputStream;
 import org.json.*;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+//import com.google.gson.Gson;
+//import com.google.gson.JsonSyntaxException;
 
 public class Conexion implements Runnable {
 
@@ -29,19 +30,10 @@ public class Conexion implements Runnable {
     // enviar datos al server 
     public boolean enviar(RequestSemaforo semaforo1, RequestSemaforo semaforo2) {
         // simulated json sent          
-        /*Gson gson = new Gson();        
-        System.out.println("Enviando.......: ");
-        RequestSemaforo[] requestCliente = {
-            new RequestSemaforo(semaforo1.getCantSemaforos(), semaforo1.getLuzRojaFalla(), semaforo1.getLuzAmarillaFalla(), semaforo1.getLuzVerdeFalla(), semaforo1.getGrupoId(), semaforo1.getClienteId()),
-            new RequestSemaforo(semaforo2.getCantSemaforos(), semaforo2.getLuzRojaFalla(), semaforo2.getLuzAmarillaFalla(), semaforo2.getLuzVerdeFalla(), semaforo2.getGrupoId(), semaforo2.getClienteId())
-        };
-       
-        System.out.println("Enviando.......: ");
-        System.out.println(" " + requestCliente.toString());
-        
-        String mensaje = gson.toJson(hola);
-        System.out.println("Enviando.......: ");*/
 
+        //String men = "{ \"peticion\":\"update\", \"info\":[ { \"cant_semaforos\":\""+semaforo1.getCantSemaforos()+"\", \"luz_red_broken\":\""+semaforo1.getLuzRojaFalla()+"\", \"luz_yellow_broken\":\""+semaforo1.getLuzAmarillaFalla()+"\", \"luz_green_broken\":\""+semaforo1.getLuzVerdeFalla()+"\", \"client_id\":\""+semaforo1.getClienteId()+"\", \"group_id\":\""+semaforo1.getGrupoId()+"\" }, { \"cant_semaforos\":\""+semaforo2.getCantSemaforos()+"\", \"luz_red_broken\":\""+semaforo2.getLuzRojaFalla()+"\", \"luz_yellow_broken\":\""+semaforo2.getLuzAmarillaFalla()+"\", \"luz_green_broken\":\""+semaforo2.getLuzVerdeFalla()+"\", \"client_id\":\""+semaforo2.getClienteId()+"\", \"group_id\":\""+semaforo2.getGrupoId()+"\" } ] }";
+        
+        
         String mens = "{\n"
                 + "   \"peticion\":\"update\",\n"
                 + "   \"info\":[\n"
@@ -63,8 +55,6 @@ public class Conexion implements Runnable {
                 + "      }\n"
                 + "   ]\n"
                 + "}";
-        // Datos al server 
-        System.out.println(mens);
         try {
             output_stream.writeUTF(mens);
             output_stream.flush();
@@ -120,7 +110,19 @@ public class Conexion implements Runnable {
 
         return true;
     }
-
+/*
+    public JSONObject recibir(String data_received) {                
+        JSONObject json_response = new JSONObject(data_received); 
+        System.out.print("Recibiendo: "+json_response.toString()+"\n");
+        // sumluted received json
+        JSONObject json = new JSONObject();
+        json.put("luz_roja", true);
+        json.put("luz_amarilla", false);
+        json.put("luz_verde", false);
+        json.put("group_id", "2");
+        return json; 
+    }
+    */
     @Override
     public void run() {
         while (lecturaActiva) {
@@ -128,6 +130,7 @@ public class Conexion implements Runnable {
                 buffer = new byte[1024];
                 input_stream.read(buffer);
                 String mensaje = new String(buffer).trim();
+                System.out.println("Esperando servidor");
                 this.recibir(mensaje);
             } catch (IOException e) {
                 System.out.println("Socket disconnected ..");

@@ -38,7 +38,7 @@ public class RequestSemaforo {
     }
 
     public boolean enviar() {
-        RequestSemaforo semaforo1 = new RequestSemaforo();
+        /*RequestSemaforo semaforo1 = new RequestSemaforo();
         semaforo1.setCantSemaforos(Integer.parseInt(getVentanaPrincipal().getTxtCantSemaforos1().getText()));
         semaforo1.setLuzRojaFalla(Integer.parseInt(getVentanaPrincipal().getTxtLuzRojaMal1().getText()));
         semaforo1.setLuzAmarillaFalla(Integer.parseInt(getVentanaPrincipal().getTxtLuzAmaMal1().getText()));
@@ -62,11 +62,7 @@ public class RequestSemaforo {
         
         if (operacionEnviar){
             //getConexion().recepcion();
-        }
-        
-        
-        
-        
+        }*/
         return true;
     }
     

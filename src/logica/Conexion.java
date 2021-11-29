@@ -3,6 +3,7 @@ package logica;
 import com.google.gson.Gson;
 import presentacion.modelo.RequestSemaforo;
 import presentacion.modelo.ResponseDeServidor;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -20,7 +21,7 @@ public class Conexion implements Runnable {
     private Socket sock;
     private DataInputStream input_stream; //Flujo datos entrada
     private DataOutputStream output_stream; //Flujo de datos de salida
-    public volatile boolean lecturaActiva;
+    private final AtomicBoolean running;
     private Thread hiloLectura;
     byte buffer[];  // Para almacenar lo que llegue del servidor
     private ResponseDeServidor responseDeServidor;
@@ -28,8 +29,7 @@ public class Conexion implements Runnable {
     private Vista vista;
 
     public Conexion(Vista vista) {
-        lecturaActiva = true;
-        hiloLectura = new Thread(this);
+        running = new AtomicBoolean(false);
         this.vista = vista;
     }
 
@@ -96,6 +96,7 @@ public class Conexion implements Runnable {
             // datos salientes
             output_stream = new DataOutputStream(sock.getOutputStream());
             // Thread lectura
+            hiloLectura = new Thread(this);
             hiloLectura.start();
             return true;
         } catch (IOException e) {
@@ -108,7 +109,7 @@ public class Conexion implements Runnable {
     public boolean desconectar() {
         System.out.println("Fin de la conexión");
         try {
-            this.lecturaActiva = false;
+            running.set(false);
             input_stream.close();
             sock.close();
             return true;
@@ -152,7 +153,8 @@ public class Conexion implements Runnable {
 
     @Override
     public void run() {
-        while (lecturaActiva) {
+        running.set(true);
+        while (running.get()) {
             try {
 
                 buffer = new byte[1024];
@@ -167,6 +169,6 @@ public class Conexion implements Runnable {
     }
 
     public void stop() {
-        lecturaActiva = false;
+        running.set(false);
     }
 }

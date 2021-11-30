@@ -112,26 +112,33 @@ public class Vista extends javax.swing.JFrame {
     }
     
     public void setRadioLuzRoja1(boolean prende){
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/semaforo_red.png")));        
         radioLuzRoja1.setSelected(true);
     }
     
     public void setRadioLuzRoja2(boolean prende){
+       jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/semaforo_red.png")));        
         radioLuzRoja2.setSelected(true);
+ 
     }
     
     public void setRadioLuzAma1(boolean prende){
+       jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/semaforo_yellow.png")));        
         radioLuzAma1.setSelected(true);
     }
     
     public void setRadioLuzAma2(boolean prende){
+       jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/semaforo_yellow.png")));        
         radioLuzAma2.setSelected(true);
     }
     
     public void setRadioLuzVerde1(boolean prende){
+       jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/semaforo_green.png")));        
         radioLuzVerde1.setSelected(true);
     }
     
     public void setRadioLuzVerde2(boolean prende){
+       jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/semaforo_green.png")));        
         radioLuzVerde2.setSelected(true);
     }
 
